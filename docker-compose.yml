@@ -1,0 +1,10 @@
+services:
+  sira-assets-container:
+    build: .
+    container_name: sira-assets-container
+    env_file: .env
+    ports:
+      - "${PORT:-8501}:8501"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
