@@ -68,11 +68,12 @@ elif page.startswith("🔄"):
     use_demo = st.checkbox("Utiliser un comptage terrain de démonstration", value=up is None)
     c1, c2 = st.columns(2)
     t_ok = c1.slider("Seuil « Match Parfait »", 80, 100, 90); t_pr = c2.slider("Seuil « Match Probable »", 50, 90, 70)
+    scope = st.checkbox("Comptage partiel : ne signaler comme absents que les actifs des agences comptées", value=True)
     if st.button("Lancer le Matching Agentique"):
         try:
-            field = (pd.read_csv(up) if up.name.endswith(".csv") else pd.read_excel(up)) if up is not None else db.sample_inventory()
+            field = (pd.read_csv(up, sep=None, engine="python", encoding="utf-8-sig") if up.name.endswith(".csv") else pd.read_excel(up)) if up is not None else db.sample_inventory()
             with st.spinner("L'Agent d'Audit rapproche les lignes…"):
-                st.session_state.match = run_matching(field, db.load("actifs"), t_ok, t_pr)
+                st.session_state.match = run_matching(field, db.load("actifs"), t_ok, t_pr, scope)
         except Exception as e: st.error(f"Échec du rapprochement : {e}")
     if "match" in st.session_state:
         res, s = st.session_state.match, summary(st.session_state.match)

@@ -21,3 +21,8 @@ def test_pipeline():
 def test_sql_guard():
     import pytest
     with pytest.raises(ValueError): agents.safe_sql("DROP TABLE actifs")
+
+def test_partial_count_scope():
+    a = db.load("actifs"); f = db.sample_inventory(); f = f[f.agence == "Yaoundé Bastos"]
+    full, part = summary(run_matching(f, a, scope=False)), summary(run_matching(f, a, scope=True))
+    assert part["absents"] < full["absents"] / 5

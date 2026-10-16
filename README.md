@@ -103,7 +103,7 @@ Ouvrir http://localhost:8501. Au premier lancement, 320 actifs et leurs tickets 
 ## 5. Utilisation
 
 1. **Copilote IA** — exemples : « Total des amortissements des serveurs de la zone Ouest », « Quels véhicules ont des réparations supérieures à 60 % de leur valeur d'origine ? », « VNC par catégorie ».
-2. **Matching** — charger `data/exemple_inventaire_terrain.csv` (ou son propre fichier), ajuster les seuils, lancer, filtrer les cas à valider, exporter en CSV.
+2. **Matching** — charger `data/exemples_comptage_terrain/` (4 fichiers, voir LISEZMOI.txt) (ou son propre fichier), ajuster les seuils, lancer, filtrer les cas à valider, exporter en CSV.
 3. **CapEx / OpEx** — régler le seuil, lire le budget de renouvellement, simuler un achat.
 4. **Rapports** — « Générer le Rapport Synthétique » puis télécharger PDF et Excel.
 5. **Données réelles** — remplacer le seeding de `core/db.py` par un import du PGI dans les tables `actifs` et `maintenance` (colonnes listées dans `core/agents.py`, constante `SCHEMA`), puis « Recalculer VNC » dans Paramètres.

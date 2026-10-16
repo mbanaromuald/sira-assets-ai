@@ -21,7 +21,7 @@ def standardize(df):
     if not (out.libelle != "").any(): raise ValueError("Colonne de libellé introuvable (libelle / désignation / description).")
     return out
 
-def run_matching(field, reg, thr_ok=90, thr_prob=70):
+def run_matching(field, reg, thr_ok=90, thr_prob=70, scope=True):
     f = standardize(field).reset_index(drop=True)
     reg = reg.reset_index(drop=True); names = {i: norm(l) for i, l in reg.libelle.items()}
     by_sn = {s.strip().upper(): i for i, s in reg.numero_serie.items() if s}
@@ -48,9 +48,13 @@ def run_matching(field, reg, thr_ok=90, thr_prob=70):
         rows.append(dict(ligne=n + 1, libelle_terrain=r.libelle, serie_terrain=sn, agence_terrain=r.agence, code_actif=g("code"),
                          libelle_registre=g("libelle"), agence_registre=g("agence"), score=round(score, 1), statut=statut, anomalie=" ; ".join(anom)))
     res = pd.DataFrame(rows)
+    rest = reg.loc[~reg.index.isin(used)]
+    if scope:  # comptage partiel : on ne réclame que les actifs des agences réellement comptées (au moins 3 lignes)
+        n = f.agence[f.agence != ""].value_counts()
+        if len(n): rest = rest[rest.agence.isin(n[n >= 3].index)]
     gone = pd.DataFrame([dict(ligne=None, libelle_terrain="", serie_terrain="", agence_terrain="", code_actif=m.code, libelle_registre=m.libelle,
                               agence_registre=m.agence, score=0, statut=KO, anomalie="Au registre, absent du comptage terrain")
-                         for _, m in reg.loc[~reg.index.isin(used)].iterrows()])
+                         for _, m in rest.iterrows()])
     return pd.concat([res, gone], ignore_index=True)
 
 def summary(res):

@@ -1,0 +1,26 @@
+FICHIERS DE COMPTAGE TERRAIN D'EXEMPLE — Sira-Assets AI
+=========================================================
+Ces fichiers simulent des comptages physiques. Ils sont construits sur les 320 actifs fictifs
+générés au premier lancement de l'application (données synthétiques, aucune donnée réelle).
+Utilisation : module « Matching & Rapprochement » > glisser le fichier > « Lancer le Matching Agentique ».
+(Laisser la case « Comptage partiel » cochée pour les fichiers 1, 2 et 3.)
+
+1_comptage_yaounde_bastos.csv   (27 lignes)  Une seule agence, comptage soigné, séparateur « , ».
+                                Colonnes : libelle, numero_serie, agence, etat.
+2_comptage_douala.xlsx          (61 lignes)  Les 3 agences de Douala, en-têtes français (Désignation, N° Série,
+                                Localisation) et colonnes en plus (N°, État, Date comptage, Code barre) ignorées.
+3_comptage_difficile_bruite.csv (116 lignes) Régions Centre et Ouest, séparateur « ; », colonnes description / serial / site,
+                                fort bruit : abréviations (srv, laptop, ATM), fautes de frappe, peu de n° de série,
+                                doublons de lignes, équipements non étiquetés.
+4_comptage_reseau_complet.xlsx  (305 lignes) Tout le réseau, en-têtes Libellé / Numéro de série / Agence.
+
+Résultats observés lors du test interne (indicatifs, jeu synthétique) :
+  fichier 1 : 26 parfaits, 0 à valider   | fichier 2 : 57 parfaits, 1 à valider
+  fichier 3 : 93 parfaits, 16 à valider  | fichier 4 : 293 parfaits, 7 à valider
+
+Colonnes reconnues par l'application (insensible à la casse) :
+  libellé  : libelle, libellé, designation, désignation, description, actif
+  série    : numero_serie, numéro de série, n° série, serie, série, serial
+  agence   : agence, localisation, site, emplacement
+Seule la colonne de libellé est obligatoire.
+Les CSV avec séparateur « , » ou « ; » (export Excel français) sont détectés automatiquement.
